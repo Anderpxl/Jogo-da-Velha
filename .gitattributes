@@ -1,2 +1,268 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+programa
+{
+	cadeia tabuleiro[3][3] = {{" "," "," "},{" "," "," "},{" "," "," "}}
+	inteiro jogadaLinha = 0, jogadaColuna = 0, turnoJogador = 1, rodada = 0, limpaTabuleiro = 1, pontuacaoJogadorUm = 0, pontuacaoJogadorDois = 0
+	cadeia jogadorUm, jogadorDois, jogadorAtual = " "
+	logico estadoJogo = verdadeiro
+	
+	funcao inicio()
+	{
+		MenuInicial()
+	}
+	funcao MenuInicial()
+	{
+
+		inteiro Escolha_Opcao = 0
+
+		enquanto(Escolha_Opcao < 1 ou Escolha_Opcao > 4){
+
+		escreva("1. Jogar \n2. Record \n3. Créditos\n4. Sair\n\nEscolha a opção pelo número: ")
+		leia(Escolha_Opcao)
+		limpa()
+
+		escolha(Escolha_Opcao){
+			caso 1 : escreva("Jogo iniciado\n") Jogo() pare
+			caso 2 : Recordes() pare
+			caso 3 : escreva("Sobre o Jogo\n\n") Sobre() pare
+			caso 4 : Sair() pare
+		}
+		}
+	
+	}
+	funcao Jogo()
+	{
+		 zeraPontuacao()
+		 Jogadores()
+		 ExibirTabuleiro()
+		 Jogada()
+	 	
+	}
+	funcao zeraPontuacao()
+	{
+		pontuacaoJogadorUm  = 0
+		pontuacaoJogadorDois = 0
+	}
+	funcao Jogadores()
+     {
+     	escreva("\nInsira o nome do Jogador 1: ")
+		leia(jogadorUm)
+		escreva("Insira o nome do Jogador 2: ")
+		leia(jogadorDois)
+		limpa()
+     }
+     funcao ExibirTabuleiro()
+	{
+		se(estadoJogo == verdadeiro){	
+		cadeia exibirTabuleiro[3][9] = {{"__",tabuleiro[0][0],"__|","__",tabuleiro[0][1],"__|","__",tabuleiro[0][2],"__                    __7__|__8__|__9__\n"},
+		                                {"__",tabuleiro[1][0],"__|","__",tabuleiro[1][1],"__|","__",tabuleiro[1][2],"__                    __4__|__5__|__6__\n"},
+		                                {"  ",tabuleiro[2][0],"  |","  ",tabuleiro[2][1],"  |","  ",tabuleiro[2][2],"                        1  |  2  |  3  "}}
+		
+	     
+	     	para(inteiro linha = 0 ; linha < 3 ; linha++){
+			para(inteiro coluna = 0 ; coluna < 9 ; coluna++){
+				escreva(exibirTabuleiro[linha][coluna])
+			}
+	     	}
+	     }senao se(estadoJogo == falso){
+	     	limpa()
+	     	escreva(jogadorAtual," venceu!!\n\n","__",tabuleiro[0][0],"__|__",tabuleiro[0][1],"__|__",tabuleiro[0][2],"__\n__",tabuleiro[1][0],"__|__",tabuleiro[1][1],"__|__",tabuleiro[1][2],"__\n  ",tabuleiro[2][0],"  |  ",tabuleiro[2][1],"  |  ",tabuleiro[2][2],"  \n\n")
+	     }
+	    		escreva("\n")
+
+			
+	}
+	funcao Jogada()
+	{
+		inteiro opcaoReiniciar = 0
+		logico verJogada
+		inteiro posiJogada
+		inteiro posicoes[9][2] = {{2,0},{2,1},{2,2},{1,0},{1,1},{1,2},{0,0},{0,1},{0,2}}
+
+		
+		enquanto(rodada < 9 e estadoJogo == verdadeiro){
+		 escreva("\nRodada ",rodada++)
+		 escreva("                           Pontuação: ",jogadorUm," ",pontuacaoJogadorUm," x ",pontuacaoJogadorDois," ",jogadorDois)
+		 se(turnoJogador == 1){
+			jogadorAtual = jogadorUm
+		}senao se(turnoJogador == 2){
+			jogadorAtual = jogadorDois
+		}
+		
+		verJogada = falso
+		
+		enquanto(verJogada == falso){
+		 escreva("\nSua vez, ",jogadorAtual,"\n\nEscolha um número: ")
+		 leia(posiJogada)
+		 
+		 para(inteiro linha = 0 ; linha < 3 ; linha++){
+			para(inteiro coluna = 0 ; coluna < 3 ; coluna++){
+				tabuleiro[jogadaLinha][jogadaColuna] = tabuleiro[jogadaLinha][jogadaColuna]
+			}
+		}
+
+		jogadaLinha = posicoes[posiJogada - 1][0]
+		jogadaColuna = posicoes[posiJogada - 1][1]
+		
+		verJogada = verdadeiro
+		
+		se(tabuleiro[jogadaLinha][jogadaColuna] == "X" ou tabuleiro[jogadaLinha][jogadaColuna] == "O"){
+		 	verJogada = falso
+				
+		}senao se(turnoJogador == 1){
+			tabuleiro[jogadaLinha][jogadaColuna] = "X"
+			verJogada = verdadeiro
+			turnoJogador = 2
+		}senao se(turnoJogador == 2){
+			tabuleiro[jogadaLinha][jogadaColuna] = "O"
+			verJogada = verdadeiro
+		 	turnoJogador = 1
+		}
+		}
+		limpa()
+		ExibirResultado()
+		ExibirTabuleiro()
+		}
+		escreva("Fim da partida\n")
+		
+		enquanto(opcaoReiniciar == 0 ou opcaoReiniciar > 3){
+			
+		escreva("\n1. Continuar Jogando\n2. Menu Inicial\n3. Sair do Jogo\n\n")
+		leia(opcaoReiniciar)
+		limpa()
+		
+		se(opcaoReiniciar == 1){
+			Reiniciar()
+		}senao se(opcaoReiniciar == 2){
+			Iniciar()
+			MenuInicial()
+		}senao se(opcaoReiniciar == 3){
+			Sair()
+		}senao se(opcaoReiniciar > 3){
+			escreva("Comando inválido\n\n")
+		}
+		}
+	}
+	funcao ExibirResultado()
+	{
+		se(tabuleiro[jogadaLinha][0] == tabuleiro[jogadaLinha][1] e tabuleiro[jogadaLinha][1] == tabuleiro[jogadaLinha][2]) {
+              se(tabuleiro[jogadaLinha][0] == "X") {
+                 estadoJogo = falso
+                 pontuacaoJogadorUm++
+                 }
+          senao se (tabuleiro[jogadaLinha][0] == "O") {
+                 estadoJogo = falso
+                 pontuacaoJogadorDois++
+                       }
+                 }
+                 se(tabuleiro[2][jogadaColuna] == tabuleiro[1][jogadaColuna] e tabuleiro[1][jogadaColuna] == tabuleiro[0][jogadaColuna]) {
+              se(tabuleiro[0][jogadaColuna] == "X") {
+                 estadoJogo = falso
+                 pontuacaoJogadorUm++
+                 }
+          senao se (tabuleiro[0][jogadaColuna] == "O") {
+                 estadoJogo = falso
+                 pontuacaoJogadorDois++                 
+                       }
+                 }
+          
+          senao se(tabuleiro[0][0] != "-" e tabuleiro[0][0] == tabuleiro[1][1] e tabuleiro[1][1] == tabuleiro[2][2]){
+			se(tabuleiro[0][0] == "X"){
+				estadoJogo = falso
+				pontuacaoJogadorUm++
+				
+			}senao se(tabuleiro[0][0] == "O"){
+				estadoJogo = falso
+				pontuacaoJogadorDois++				
+			}
+		}
+		senao se(tabuleiro[0][2] != "-" e tabuleiro[0][2] == tabuleiro[1][1] e tabuleiro[1][1] == tabuleiro[2][0]){
+				se(tabuleiro[0][2] == "X"){
+					estadoJogo = falso
+					pontuacaoJogadorUm++
+					
+				}senao se(tabuleiro[0][2] == "O"){
+					estadoJogo = falso
+					pontuacaoJogadorDois++					
+				}
+		}
+		
+		}
+	funcao Iniciar()
+	{
+		para(inteiro i = 0 ; i < 3 ; i++){
+     		para(inteiro j = 0 ; j < 3 ; j++){
+     			tabuleiro[i][j] = " "
+     		}
+     	}
+     	
+      	rodada = 0
+     	estadoJogo = verdadeiro
+		turnoJogador = 1
+	}
+	funcao Reiniciar()
+     {
+     	para(inteiro i = 0 ; i < 3 ; i++){
+     		para(inteiro j = 0 ; j < 3 ; j++){
+     			tabuleiro[i][j] = " "
+     		}
+     	}
+      	rodada = 0
+     	estadoJogo = verdadeiro
+     	ExibirTabuleiro()
+     	Jogada()
+     }
+	funcao Recordes()
+	{
+		inteiro opcao = 0
+
+		se(pontuacaoJogadorUm == 0 e pontuacaoJogadorDois == 0){
+			escreva("Nenhuma pontuação foi registrado, jogue para que gere uma nova pontuação.\n\n")
+		}
+		se(pontuacaoJogadorUm > pontuacaoJogadorDois){
+			escreva("Maior pontuação: ",jogadorUm," (",pontuacaoJogadorUm,")\n\n")
+		}senao se(pontuacaoJogadorDois > pontuacaoJogadorUm){
+			escreva("Maior pontuação: ",jogadorDois," (",pontuacaoJogadorDois,")\n\n")
+	     }
+	     enquanto(opcao == 0 ou opcao > 2){
+	     	
+	     escreva("1. Menu Inicial\n2. Sair\n\n")
+	     leia(opcao)
+	     limpa()
+	     
+	     se(opcao == 1){
+	     	MenuInicial()
+	     }senao se(opcao == 2){
+	     	Sair()
+	     }senao se(opcao > 2){
+	     	escreva("Comando Inválido\n\n")
+	     }
+	     }
+	}
+	funcao Sobre()
+	{
+		inteiro opcao = 0
+		
+		escreva("Desenvolvedor: Anderson Lima\nPrograma: Portugol Studio\nJogo: Jogo da Velha\nData de Criação: 25-07-2019\n\n")
+		
+		enquanto(opcao == 0 ou opcao > 2){	
+			
+		escreva("1. Menu Inicial\n2. Sair\n\n")	
+	     leia(opcao)
+	     limpa()
+     
+	     se(opcao == 1){
+	     	MenuInicial()
+	     }senao se(opcao == 2){
+	     	Sair()
+	     }senao se(opcao > 2){
+	     	escreva("Comando Inválido\n\n")
+	     }
+	     }
+	}
+	funcao Sair()
+     {
+     	escreva("Jogo Encerrado!!\n\nVolte sempre o/\n\n")
+     }
+}
